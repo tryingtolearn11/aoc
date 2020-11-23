@@ -26,4 +26,3 @@ print(readInput(f=open("aocdayoneinput.txt", "r")))
 
 
 
-
