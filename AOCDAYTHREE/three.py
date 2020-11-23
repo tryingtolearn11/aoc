@@ -90,17 +90,3 @@ def find_total_houses_p2(f):
 find_total_houses_p2(f=open("input.txt","r"))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-find_total_houses_p2(f=open("input.txt","r"))
