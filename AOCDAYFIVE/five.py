@@ -53,43 +53,54 @@ def find_nice_words(f):
 
 
 
-def find_nice_words_p2():
-    textstring = "qjhvhtzxzqqjkmpb"
-    print(len(textstring))
-    con2 = False
-    con1 = False
-    # Condition 1
-    
-    i, j = 0, 1
-    y = len(textstring)-1
-    while i < len(textstring)-2 and j < len(textstring)-1:
-        for x in reversed(range(len(textstring)-1)):
-            print("x, y : ", textstring[x], textstring[y])
-            y-=1
-            if textstring[i]==textstring[x] and textstring[j]==textstring[y]:
-                print("FOUND PAIR ")
-                print("i , j :", textstring[i],textstring[j])
-                print("x, y :", textstring[x], textstring[y])
-                break
+def find_nice_words_p2(f):
+
+
+    box = f.read().splitlines()
+    nicewords = []
+    for textstring in box:
+        con1, con2 = False, False
+        i, j = 0, 1
+        y = len(textstring)-1
+        x = y-1
+        while i < len(textstring) and j < y:
+            while x > j and y > x:
+                print("x, y : ", textstring[x], textstring[y])
+                if textstring[i]==textstring[x] and textstring[j]==textstring[y]:
+                    print("FOUND PAIR ")
+                    print("i , j :", textstring[i],textstring[j])
+                    print("x, y :", textstring[x], textstring[y])
+                    print("-----------------------------")
+                    con1 = True
+                    break
                 
+                else:
+                    x-=1
+                    y-=1
+                    print("i , j : ", textstring[i], textstring[j])
+
+            if con1:
+                break
             else:
-                print("i , j : ", textstring[i], textstring[j])
-        i+=1
-        j+=1
+                i+=1
+                j+=1
+                y = len(textstring)-1
+                x = y-1
+        print("i ", i, "  j ", j)
+        print("x ", x, "y ", y)
 
+        # Condition 2
+        for k in range(len(textstring)-2):
+            if textstring[k] == textstring[k+2]:
+                con2 = True
+        
+        if con1 and con2:
+            nicewords.append(textstring)
+    print(nicewords)
+    print("TOTAL NICE WORDS : ", len(nicewords))
+   
 
-
-
-
-    # Condition 2
-    for k in range(len(textstring)-2):
-        if textstring[k] == textstring[k+2]:
-            con2 = True
-
-
-    print(con2)
-
-print(find_nice_words_p2())
+print(find_nice_words_p2(f=open("input.txt","r")))
 
 
 
