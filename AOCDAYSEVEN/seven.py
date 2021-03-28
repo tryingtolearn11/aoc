@@ -36,8 +36,9 @@ def p1(f):
     
     for i in data:
         ciruit['{}'.format(i.split("->")[-1].replace(" ", ""))] = i
-    print(ciruit)
+    # print(ciruit)
 
+   
 
     
 
