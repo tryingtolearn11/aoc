@@ -1,6 +1,7 @@
 
 # --- Day 7: Some Assembly Required ---
 
+import functools
 
 
 # work with the example for now 
@@ -31,17 +32,46 @@
 
 def p1(f):
     # create hash table to store wires
-    ciruit = {}
+    circuit = {}
     data = [line for line in f.read().splitlines()]
     
     for i in data:
-        ciruit['{}'.format(i.split("->")[-1].replace(" ", ""))] = i
-    # print(ciruit)
+        # Circuit[right-hand side] = left-hand side
+        circuit[i.split("->")[-1].strip()] = i.split("->")[0].strip()
+    print(circuit)
+    print("-----------------------------------------")
+
+    @functools.lru_cache()
+    def get_value(key):
+        try:
+            return int(key)
+        except ValueError:
+            pass
+
+        s = circuit[key].split(" ")
+        print(s)
+
+    get_value("a")
+    
+
+
+     
 
    
 
     
 
 
-
 p1(f=open("input.txt", "r"))
+
+
+
+
+    
+'''
+    d = {}
+    for line in data:
+        cmd, key = line.split("->")
+        d[key.strip()] = cmd.strip()
+        print(d)
+'''
