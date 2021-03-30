@@ -3,34 +3,7 @@
 
 import functools
 
-
-# work with the example for now 
-'''     
-    # example circuit
-    x = 123
-    y = 456
-    d = x & y
-    e = x | y
-    f = x << 2
-    g = y >> 2
-    h = (2**16) - x-1
-    i = (2**16) - y-1 
-    
-    test = "123 -> x"
-    print(test[::-1])
-
-
-    print("d: ", d) 
-    print("e: ", e) 
-    print("f: ", f) 
-    print("g: ", g) 
-    print("h: ", h) 
-    print("i: ", i) 
-    print("x: ", x) 
-    print("y: ", y)
-'''
-
-def p1(f):
+def solution(f):
     # create hash table to store wires
     circuit = {}
     data = [line for line in f.read().splitlines()]
@@ -40,7 +13,8 @@ def p1(f):
         circuit[i.split("->")[-1].strip()] = i.split("->")[0].strip()
     print(circuit)
     print("-----------------------------------------")
-
+   
+    # Recursive
     @functools.lru_cache()
     def get_value(key):
         try:
@@ -49,29 +23,27 @@ def p1(f):
             pass
 
         s = circuit[key].split(" ")
-        print(s)
 
-    get_value("a")
-    
+        if "NOT" in s:
+            return ~get_value(s[1])
+        if "AND" in s:
+            return get_value(s[0]) & get_value(s[2])
+        elif "OR" in s:
+            return get_value(s[0]) | get_value(s[2])
+        elif "LSHIFT" in s:
+            return get_value(s[0]) << get_value(s[2])
+        elif "RSHIFT" in s:
+            return get_value(s[0]) >> get_value(s[2])
+        else:
+            return get_value(s[0])
+
+    # Solution to p2 -Comment out circuit["b"] to get p1 solution
+    #circuit["b"] = str(get_value("a"))
+    get_value.cache_clear()
+    print(get_value("a"))
+
+solution(f=open("input.txt", "r"))
 
 
-     
-
-   
-
-    
 
 
-p1(f=open("input.txt", "r"))
-
-
-
-
-    
-'''
-    d = {}
-    for line in data:
-        cmd, key = line.split("->")
-        d[key.strip()] = cmd.strip()
-        print(d)
-'''
