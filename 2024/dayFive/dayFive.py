@@ -1,5 +1,3 @@
-import itertools
-
 file = open("sample.txt")
 rules, updates = [], []
 for line in file:
@@ -32,28 +30,24 @@ def validateUpdates(updateOrder):
     return [c for c in updateOrder if c not in wrongUpdates]
 print(sum([int(m[len(m) // 2]) for m in validateUpdates(updateOrder)]))
 
+# Not my code, needed help
+def format_input(inp):
+    pairs = set((n1,n2) for n1, n2 in [map(int, l.strip().split('|')) for l in inp if '|' in l])
+    updates = [list(map(int, l.strip().split(','))) for l in inp if ',' in l]
+    return pairs, updates
 
 
-def correct(wrongUpdates):
-    w = []
-    c = []
-    for u in wrongUpdates:
-        perms = list(itertools.permutations(u))
-        for perm in perms:
-            stack = []
-            for i in perm:
-                stack.append(i)
-                if i in orderRules.keys() and any([s for s in stack if s in orderRules[i]]):
-                    w.append(perm)
-                    break
-        c.append([l for l in perms if l not in w]) 
-    return c
-ans = []
-for i in correct(wrongUpdates):
-    for j in i:
-        ans.append(list(j))
+with open("input.txt", 'r') as file:
+    inp = file.readlines()
 
-for w,c in zip(wrongUpdates, ans):
-    print(f"Wrong : {w}, Corrected : {c}")
-print(sum([int(m[len(m) // 2]) for m in ans]))
+pairs, updates = format_input(inp)
+print(pairs, updates)
 
+def correctUpdate(u):
+    return sorted(u, key=lambda x: sum([(e, x) in pairs for e in u]))
+
+def findIncorrect(updates):
+    return [u for u in updates if u != correctUpdate(u)]
+print(findIncorrect(updates))
+
+print("P2: ", sum([u[len(u)//2] for u in map(correctUpdate, findIncorrect(updates))]))
